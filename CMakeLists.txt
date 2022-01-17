@@ -6,7 +6,7 @@ set(BOOST_ROOT /usr/local/include/Boost)
 set(Boost_NO_SYSTEM_PATHS ON)
 set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 
-set(CMAKE__FLAGS)
+set(CMAKE_BUILD_TYPE DEBUG)
 
 find_package(Boost COMPONENTS system filesystem thread REQUIRED)
 
@@ -23,7 +23,7 @@ aux_source_directory( ${PROJECT_SOURCE_DIR}/Src App_SRC)
 
 add_executable(PicCompress ${App_SRC})
 
-target_include_directories(PicCompress INTERFACE ${PROJECT_SOURCE_DIR}/Include )
+target_include_directories(PicCompress PUBLIC ${PROJECT_SOURCE_DIR}/Include)
 target_include_directories(PicCompress PUBLIC ${PROJECT_SOURCE_DIR}/Src)
 target_include_directories(PicCompress PUBLIC ${Boost_INCLUDE_DIRS})        
 

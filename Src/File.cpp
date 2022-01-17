@@ -52,3 +52,26 @@ void getFileList(const std::string &path, std::vector<std::string> &fileList)
         }
     }
 }    
+
+int getFileSize(const std::string &path)
+{
+    boost::filesystem::path filePath(path);
+    boost::system::error_code ec;
+    boost::uintmax_t fileSize = boost::filesystem::file_size(filePath, ec);
+
+    return fileSize;
+}
+
+std::string getFileName(const std::string &path)
+{
+    boost::filesystem::path filePath(path);
+    std::string fileName = filePath.stem().string();
+    return fileName;
+}
+
+std::string getFileNameExtension(const std::string &path)
+{
+    boost::filesystem::path filePath(path);
+    std::string fileName = filePath.extension().string();
+    return fileName;
+}
