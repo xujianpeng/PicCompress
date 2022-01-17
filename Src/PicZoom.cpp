@@ -21,6 +21,7 @@ void PicZoom::start()
     //待测试文件数量
     size_t size = m_fileList.size();
     size_t total = size * (MAXQUALITY - MINQUALITY);
+    printf("total = %lu\n" , total);
     //进度
     int progressTmp = 0;
     //进度百分比
@@ -38,7 +39,7 @@ void PicZoom::start()
         //读取图片
         CommPicInfo picInfo;
         memset((void *)&picInfo, 0, sizeof(picInfo));
-        printf("readPic path : %s\n", tmpPath.c_str());
+        // printf("readPic path : %s\n", tmpPath.c_str());
         picInfo.data = stbi_load(tmpPath.c_str(), &picInfo.width, &picInfo.height, &picInfo.components, 3);
         if(picInfo.data == NULL)
         {
@@ -53,6 +54,8 @@ void PicZoom::start()
         std::string fileName = getFileName(tmpPath);
         for(int j = MINQUALITY ; j < MAXQUALITY; ++j)
         {
+            progressTmp += 1;
+
             record.quality = j;
             picInfo.quality = j;
             //TODO 压缩文件命名 fileName + _ + quality _ width*height.jpg
@@ -66,11 +69,19 @@ void PicZoom::start()
                                     + "*"
                                     + std::to_string(picInfo.height)
                                     + ".jpg";
-            printf("result path : %s\n", result.c_str());
-            writeJpg(result.c_str(), &picInfo);
+            // printf("result path : %s\n", result.c_str());
+            if(record.srcSize > 60 * 1024)
+            {
+                writeJpg(result.c_str(), &picInfo);
+            }
             record.dstSize = getFileSize(result);
 
             oneFileLoopRecord.emplace_back(record);
+            if(progress != (int)(progressTmp * 100) / total)
+            {
+                progress = progressTmp;
+                printf("progress : %d\n", progress);
+            }
         }
         m_testRecord.emplace_back(oneFileLoopRecord);
 

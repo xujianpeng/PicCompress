@@ -68,7 +68,7 @@ void writeJpg(const char *fileName, CommPicInfo *picInfo)
  
 	row_stride = picInfo->width * 3;	/* JSAMPLEs per row in image_buffer */
  
-	printf("width %d height %d\n", picInfo->width, picInfo->height);	
+	// printf("width %d height %d\n", picInfo->width, picInfo->height);	
 
 	while (cinfo.next_scanline < cinfo.image_height) 
     {
